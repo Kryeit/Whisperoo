@@ -1,9 +1,7 @@
-# Fabric Example Mod
+Really simple mod:
+- Adds `/reply` command, which redirects to the `/tell` command, so permissions and message formatting are the same as in /tell
+- Adds 2 aliases:
+- `/m` alias for `/tell`
+- `/r` alias for `/reply`
 
-## Setup
-
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+There is no configuration, it's a plug-and-play

@@ -1,10 +1,10 @@
 package com.kryeit.mixin;
 
 import com.kryeit.commands.Reply;
-import net.minecraft.network.message.SignedMessage;
-import net.minecraft.server.command.MessageCommand;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.PlayerChatMessage;
+import net.minecraft.server.commands.MsgCommand;
+import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,14 +12,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Collection;
 
-@Mixin(MessageCommand.class)
+@Mixin(MsgCommand.class)
 public class MessageCommandMixin {
-    @Inject(method = "execute", at = @At("HEAD"))
-    private static void onExecute(ServerCommandSource source, Collection<ServerPlayerEntity> targets, SignedMessage message, CallbackInfo ci) {
-        ServerPlayerEntity sender = source.getPlayer();
+    @Inject(method = "sendMessage", at = @At("HEAD"))
+    private static void onSendMessage(CommandSourceStack source, Collection<ServerPlayer> targets, PlayerChatMessage message, CallbackInfo ci) {
+        ServerPlayer sender = source.getPlayer();
         if (sender != null) {
-            for (ServerPlayerEntity target : targets)
-                Reply.onMessageReceived(sender.getUuid(), target.getUuid());
+            for (ServerPlayer target : targets)
+                Reply.onMessageReceived(sender.getUUID(), target.getUUID());
         }
     }
 }

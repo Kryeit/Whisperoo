@@ -2,27 +2,24 @@ package com.kryeit;
 
 import com.kryeit.commands.Message;
 import com.kryeit.commands.Reply;
-import net.fabricmc.api.DedicatedServerModInitializer;
-import net.fabricmc.api.ModInitializer;
-
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Whisperoo implements DedicatedServerModInitializer {
+@Mod(Whisperoo.ID)
+public class Whisperoo {
 
-	public static String ID = "whisperoo";
+	public static final String ID = "whisperoo";
     public static final Logger LOGGER = LoggerFactory.getLogger(Whisperoo.class);
 
-	@Override
-	public void onInitializeServer() {
-		registerCommands();
+	public Whisperoo() {
+		NeoForge.EVENT_BUS.addListener(Whisperoo::registerCommands);
 	}
 
-	public void registerCommands() {
-		CommandRegistrationCallback.EVENT.register((dispatcher, dedicatedServer, commandFunction) -> {
-			Reply.register(dispatcher);
-			Message.register(dispatcher);
-		});
+	public static void registerCommands(RegisterCommandsEvent event) {
+		Reply.register(event.getDispatcher());
+		Message.register(event.getDispatcher());
 	}
 }
